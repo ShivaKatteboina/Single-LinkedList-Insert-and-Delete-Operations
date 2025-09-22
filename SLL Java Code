@@ -1,0 +1,195 @@
+// Singly Linked List implementation in Java
+// Supports insertion and deletion by position, value, head, and tail.
+
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class Main {
+
+    // ================= DELETE OPERATIONS =================
+
+    // Delete head node
+    public static Node deleteHead(Node head) {
+        if (head == null) return null;
+        return head.next;
+    }
+
+    // Delete tail node
+    public static Node deleteTail(Node head) {
+        if (head == null || head.next == null) return null;
+
+        Node temp = head;
+        while (temp.next.next != null) {
+            temp = temp.next;
+        }
+        temp.next = null;
+        return head;
+    }
+
+    // Delete node at a given position (1-based index)
+    public static Node deletePos(Node head, int pos) {
+        if (head == null) return null;
+
+        if (pos == 1) {
+            return head.next;
+        }
+
+        int cnt = 1;
+        Node temp = head;
+        while (temp.next != null) {
+            if (cnt == pos - 1) {
+                temp.next = temp.next.next;
+                return head;
+            }
+            cnt++;
+            temp = temp.next;
+        }
+        return head;
+    }
+
+    // Delete node by value (first occurrence)
+    public static Node deleteValue(Node head, int k) {
+        if (head == null) return null;
+
+        if (head.data == k) {
+            return head.next;
+        }
+
+        Node temp = head;
+        while (temp.next != null) {
+            if (temp.next.data == k) {
+                temp.next = temp.next.next;
+                return head;
+            }
+            temp = temp.next;
+        }
+        return head;
+    }
+
+    // ================= INSERT OPERATIONS =================
+
+    // Insert at head
+    public static Node insertHead(Node head, int data) {
+        Node temp = new Node(data);
+        temp.next = head;
+        return temp;
+    }
+
+    // Insert at tail
+    public static Node insertTail(Node head, int data) {
+        Node newNode = new Node(data);
+        if (head == null) return newNode;
+
+        Node temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = newNode;
+        return head;
+    }
+
+    // Insert at a given position (1-based index)
+    public static Node insertPos(Node head, int pos, int data) {
+        if (pos == 1) {
+            Node temp = new Node(data);
+            temp.next = head;
+            return temp;
+        }
+
+        int cnt = 1;
+        Node temp = head;
+        Node newNode = new Node(data);
+        while (temp != null) {
+            if (cnt == pos - 1) {
+                newNode.next = temp.next;
+                temp.next = newNode;
+                return head;
+            }
+            cnt++;
+            temp = temp.next;
+        }
+        return head;
+    }
+
+    // Insert before a given value (first occurrence)
+    public static Node insertValue(Node head, int value, int data) {
+        if (head == null) return null;
+
+        if (head.data == value) {
+            Node temp = new Node(data);
+            temp.next = head;
+            return temp;
+        }
+
+        Node temp = head;
+        while (temp.next != null) {
+            if (temp.next.data == value) {
+                Node newNode = new Node(data);
+                newNode.next = temp.next;
+                temp.next = newNode;
+                return head;
+            }
+            temp = temp.next;
+        }
+        return head;
+    }
+
+    // ================= UTILITY METHOD =================
+
+    // Print the linked list
+    public static void printList(Node head) {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    // ================= DRIVER CODE =================
+    public static void main(String[] args) {
+        // Create linked list from array
+        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8};
+        Node head = new Node(arr[0]);
+        Node mover = head;
+        for (int i = 1; i < arr.length; i++) {
+            Node temp = new Node(arr[i]);
+            mover.next = temp;
+            mover = temp;
+        }
+
+        System.out.println("Original List:");
+        printList(head);
+
+        head = insertValue(head, 6, 10);
+        System.out.println("After inserting 10 before value 6:");
+        printList(head);
+
+        head = deletePos(head, 3);
+        System.out.println("After deleting node at position 3:");
+        printList(head);
+
+        head = insertPos(head, 1, 99);
+        System.out.println("After inserting 99 at position 1:");
+        printList(head);
+
+        head = deleteValue(head, 7);
+        System.out.println("After deleting value 7:");
+        printList(head);
+
+        head = deleteHead(head);
+        System.out.println("After deleting head:");
+        printList(head);
+
+        head = deleteTail(head);
+        System.out.println("After deleting tail:");
+        printList(head);
+    }
+}
